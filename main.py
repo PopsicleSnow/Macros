@@ -1,69 +1,49 @@
 import requests
-from bs4 import BeautifulSoup
+from datetime import datetime
+import pytz
+from flask import Flask, render_template
 
 #####
 """Get the menu items"""
 #####
 
-response = requests.get("https://dining.berkeley.edu/menus/")
+locations = {}
+today = datetime.now(pytz.timezone('America/Los_Angeles') ).strftime("%Y%m%d")
+locations["Cafe3"] = requests.get(f"https://dining.berkeley.edu/wp-content/uploads/xml_files/Cafe_3_{today}.xml")
+locations["Foothill"] = requests.get(f"https://dining.berkeley.edu/wp-content/uploads/xml_files/Foothill_{today}.xml")
+locations["Crossroads"] = requests.get(f"https://dining.berkeley.edu/wp-content/uploads/xml_files/Crossroads_{today}.xml")
 
-soup = BeautifulSoup(response.text, 'html.parser')
+for location in tuple(locations):
+    if locations[location].status_code != 200:
+        locations.pop(location)
 
-foothill = soup.find_all("li", class_="Foothill")[0]
-meals = foothill.find_all("li", class_="preiod-name")
-
-food_options = {}
-for meal in meals:
-    meal_name = next(meal.span.strings)
-    food_options[meal_name] = {}
-    for typemeal in meal.find_all("div", class_="cat-name"):
-        food_options[meal_name][typemeal.span.string] = []
-        for item in typemeal.find_all("li"):
-            food_options[meal_name][typemeal.span.string] += [{"name": item.span.string, "id":item['data-id'], "menuid":item['data-menuid']}]
-print(food_options)
-
-####
-"""Get nutritional facts"""
-####
-
-location = ""
-id = ""
-
-d = {'action':'get_recipe_details', 'location':location, 'id':id}
-response = requests.post("https://dining.berkeley.edu/wp-admin/admin-ajax.php", data=d)
-
-print(response.text)
-
-##### Below is the flask code #####
-## Fix the food_options stuff
-
-from flask import Flask, request
-import requests
+#####
+"""Web App"""
+#####
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    if request.method == 'POST':
-        location = request.form['location']
-        id = request.form['id']
-        d = {'action': 'get_recipe_details', 'location': location, 'id': id}
-        response = requests.post("https://dining.berkeley.edu/wp-admin/admin-ajax.php", data=d)
-        return response.text
-    else:
-        options = ''
-        for meal, types in food_options.items():
-            options += f'<h3>{meal}</h3>'
-            for typemeal, items in types.items():
-                options += f'<h4>{typemeal}</h4>'
-                for item in items:
-                    options += f'<p>{item["name"]}</p>'
-                    options += f'<form method="POST" action="/">'
-                    options += f'<input type="hidden" name="location" value="{item["menuid"]}">'
-                    options += f'<input type="hidden" name="id" value="{item["id"]}">'
-                    options += f'<button type="submit">Select</button>'
-                    options += f'</form>'
-        return options
+    return render_template('index.html', locations=list(locations.keys()))
+
+@app.route('/Cafe3')
+def cafe3():
+    if "Cafe3" in locations:
+        return render_template('cafe3.html')
+    return render_template('closed.html')
+
+@app.route('/Crossroads')
+def crossroads():
+    if "Crossroads" in locations:
+        return render_template('cafe3.html')
+    return render_template('closed.html')
+
+@app.route('/Foothill')
+def foothill():
+    if "Foothill" in locations:
+        return render_template('foothill.html')
+    return render_template('closed.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

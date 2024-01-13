@@ -1,5 +1,5 @@
 from locations import locations
-import xml.etree.ElementTree as ET
+from lxml import etree as ET
 
 def menu(loc):
     # Get xml from web request
@@ -10,17 +10,17 @@ def menu(loc):
     data = {}
     nutrient_list = None
     for mealperiod in root:
-        mealperiod_name = mealperiod.attrib["mealperiodname"]
+        mealperiod_name = mealperiod.get("mealperiodname")
         nutrients_element = mealperiod.find("nutrients")
         data[mealperiod_name] = {}
         if nutrients_element is not None:
             nutrient_list = nutrient_list or nutrients_element.text.split('|')[:-1]
             for recipes in mealperiod.findall('recipes'):
                 for recipe in recipes.findall('recipe'):
-                    recipe_data = data[mealperiod_name][recipe.attrib["shortName"]] = {}
-                    recipe_data["category"] = recipe.attrib["category"]
-                    recipe_data["servingSize"] = recipe.attrib["servingSize"] + recipe.attrib["servingSizeUnit"]
-                    nutrient_data = recipe.attrib["nutrients"].split('|')[:-1]
+                    recipe_data = data[mealperiod_name][recipe.get("shortName")] = {}
+                    recipe_data["category"] = recipe.get("category")
+                    recipe_data["servingSize"] = recipe.get("servingSize") + recipe.get("servingSizeUnit")
+                    nutrient_data = recipe.get("nutrients").split('|')[:-1]
                     for nutrient in nutrient_list:
                         recipe_data[nutrient] = nutrient_data[nutrient_list.index(nutrient)]
     return data

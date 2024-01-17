@@ -1,41 +1,71 @@
-from flask import Flask, render_template
-from locations import locations
+from flask import Flask, render_template, jsonify, request
+from query_database import query
+from itertools import chain
+import sqlite3
 
 #####
 """Web App"""
+# next:
+# pass in the data for each location, ignore the /get_data route
+# present option to choose mealperiods
+# update_database.py and menu.py both run locations(), fix to only do once
+# future:
+# show location options, mealperiod options, in same page, one after another
+# save foods to historical database 
 #####
-
-locations = locations()
 
 app = Flask(__name__)
 
+def dict_factory(cursor, row):
+    return [value for value in row]
+
+def query_db(statement):
+    conn = sqlite3.connect("menu.db")
+    conn.row_factory = dict_factory
+    cursor = conn.cursor()
+    cursor.execute(statement)
+    data = cursor.fetchall()
+    conn.close()
+    data = list(chain.from_iterable(data))
+    print(data)
+    return data
+
 @app.route('/')
 def index():
-    return render_template('index.html', locations=list(locations.keys()))
+    locations = query_db("SELECT name FROM sqlite_master")
+    return render_template('index.html', locations=list(locations))
 
 @app.route('/Cafe3')
 def cafe3():
-    if "Cafe3" in locations.keys():
+    if "Cafe3" in query_db("SELECT name FROM sqlite_master"):
         return render_template('cafe3.html')
     return render_template('closed.html')
 
 @app.route('/Crossroads')
 def crossroads():
-    if "Crossroads" in locations.keys():
+    if "Crossroads" in query_db("SELECT name FROM sqlite_master"):
         return render_template('crossroads.html')
     return render_template('closed.html')
 
 @app.route('/Foothill')
 def foothill():
-    if "Foothill" in locations.keys():
+    if "Foothill" in query_db("SELECT name FROM sqlite_master"):
         return render_template('foothill.html')
     return render_template('closed.html')
 
 @app.route('/ClarkKerr')
 def clarkkerr():
-    if "ClarkKerr" in locations.keys():
+    if "ClarkKerr" in query_db("SELECT name FROM sqlite_master"):
         return render_template('clarkkerr.html')
     return render_template('closed.html')
+
+@app.route('/get_data')
+def get_data():
+    mealperiod = request.args.get('mealperiod')
+    location = request.args.get('location')
+    # Logic to fetch data from the database based on the category
+    data = query(mealperiod, location)
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)

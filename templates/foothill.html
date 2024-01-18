@@ -3,7 +3,52 @@
 {% block title %} Foothill {% endblock %}
 
 {% block content %}
-<h1>This location is Foothill.</h1>
-<p id="mealperiods"></p>
+<div class="container d-flex justify-content-center text-center vh-100">
+    <div class="row align-self-center row-cols-1">
+        <div class="col">
+            <h1>Foothill</h1>
+            <h1>Choose your Meal Period</h1>
+        </div>
+        <div class="col">
+            <div class="dropdown-center">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark" id="mealperiods">
+                    <li><a class="dropdown-item">{{ location }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to fetch and display data
+    function fetchData() {
+        // Make an AJAX request to /mealperiods endpoint with appropriate parameters
+        $.ajax({
+            url: '/mealperiods',
+            data: {
+                location: 'Foothill'
+            },
+            success: function (data) {
+                // Update the content of the data-container div with the received data
+                data.forEach(function (mealPeriod) {
+                    $('#mealperiods').append('<li><a class="dropdown-item" href="#">' + mealPeriod + '</a></li>');
+                })
+            },
+            error: function (error) {
+                console.log('Error fetching data:', error);
+            }
+        });
+    }
+
+    // Call the fetchData function when the page loads or when needed
+    $(document).ready(function () {
+        fetchData();
+    });
+</script>
+
 
 {% endblock %}
+

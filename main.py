@@ -6,12 +6,11 @@ import sqlite3
 #####
 """Web App"""
 # next:
-# pass in the data for each location, ignore the /get_data route
 # present option to choose mealperiods
 # update_database.py and menu.py both run locations(), fix to only do once
 # future:
 # show location options, mealperiod options, in same page, one after another
-# save foods to historical database 
+# save foods to historical database
 #####
 
 app = Flask(__name__)
@@ -64,8 +63,16 @@ def get_data():
     mealperiod = request.args.get('mealperiod')
     location = request.args.get('location')
     # Logic to fetch data from the database based on the category
-    data = query(mealperiod, location)
-    return jsonify(data)
+    if mealperiod and location:
+        data = query(mealperiod, location)
+        return jsonify(data)
+
+@app.route('/mealperiods')
+def mealperiods():
+    location = request.args.get('location')
+    if location:
+        data = query_db(f"SELECT DISTINCT mealperiod FROM {location}")
+        return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)

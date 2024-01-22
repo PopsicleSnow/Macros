@@ -4,11 +4,12 @@
 
 {% block content %}
 <div class="container d-flex justify-content-center text-center vh-100">
-    <div class="row align-self-center row-cols-1">
+    <div class="row align-self-center">
         <div class="col">
             <h1>Foothill</h1>
             <h1 class="animate__animated animate__fadeInRight" id="prompt">Choose your Meal Period</h1>
         </div>
+        <div class="w-100"></div>
         <div class="col">
             <div class="dropdown-center" id="mealperiods-dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -18,8 +19,8 @@
                 </ul>
             </div>
             <form class="d-none" id="foodForm">
-                <div class="border px-5 text-center">
-                    <div class="p-2" id="fooditems">
+                <div class="card px-5 text-center">
+                    <div class="p-2 card-body" id="fooditems">
                         <!-- Content here -->
                     </div>
                 </div>
@@ -76,8 +77,8 @@
         data.forEach(function (foodItem) {
             console.log(foodItem)
             $('#fooditems').append('<div class="input-group mb-3"><span class="input-group-text" id="'
-                                        + foodItem[2] + '">'+ foodItem[2] + " - " + foodItem[8]
-                                        + '</span><input type="number" class="form-control" placeholder="0"></div>');
+                                        + foodItem[2] + '">'+ foodItem[2] + '</span><span class="input-group-text">' + foodItem[8] + '</span>'
+                                        + '<input type="number" class="form-control" placeholder="0"></div>');
         })
     }
 

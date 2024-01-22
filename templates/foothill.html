@@ -7,24 +7,47 @@
     <div class="row align-self-center row-cols-1">
         <div class="col">
             <h1>Foothill</h1>
-            <h1>Choose your Meal Period</h1>
+            <h1 class="animate__animated animate__fadeInRight" id="prompt">Choose your Meal Period</h1>
         </div>
         <div class="col">
-            <div class="dropdown-center">
+            <div class="dropdown-center" id="mealperiods-dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Select
                 </button>
                 <ul class="dropdown-menu dropdown-menu-dark" id="mealperiods">
-                    <li><a class="dropdown-item">{{ location }}</a></li>
                 </ul>
             </div>
+            <form class="d-none" id="foodForm">
+                <div class="border px-5 text-center">
+                    <div class="p-2" id="fooditems">
+                        <!-- Content here -->
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">Submit</button>
+            </form>
         </div>
     </div>
 </div>
 
 <script>
+    // Call the fetchData function when the page loads or when needed
+    $(document).ready(function () {
+        fetchMealperiods();
+
+        $('#mealperiods').on('click', '.dropdown-item', function (event) {
+            event.preventDefault();
+
+            // Get the selected meal period
+            var selectedMealPeriod = $(this).text();
+
+            // Update the page content based on the selected meal period
+            fetchFoodItems(selectedMealPeriod);
+            $('#foodForm').removeClass('d-none');
+        });
+    });
+
     // Function to fetch and display data
-    function fetchData() {
+    function fetchMealperiods() {
         // Make an AJAX request to /mealperiods endpoint with appropriate parameters
         $.ajax({
             url: '/mealperiods',
@@ -43,10 +66,39 @@
         });
     }
 
-    // Call the fetchData function when the page loads or when needed
-    $(document).ready(function () {
-        fetchData();
-    });
+    function updateFoodItems(mealPeriod, data) {
+        // Replace the content or update as needed
+        $('#prompt').html('<h1>What did you eat?</h1>');
+
+        // You can also add a new dropdown for food items or perform additional AJAX requests here
+        // For simplicity, let's assume a predefined list of food items
+        $('#mealperiods-dropdown').addClass('d-none');
+        data.forEach(function (foodItem) {
+            console.log(foodItem)
+            $('#fooditems').append('<div class="form-check"><input class="form-check-input" type="checkbox" value="'+ foodItem[2] + '" id="'+ foodItem[2] + 
+                                    '"><label class="form-check-label" for="'+ foodItem[2] + '">'
+                                        + foodItem[1] + " - " + foodItem[2] + 
+                                    '</label></div>');
+        })
+    }
+
+    function fetchFoodItems(mealperiod) {
+        // Make an AJAX request to /fooditems endpoint with appropriate parameters
+        $.ajax({
+            url: '/get_data',
+            data: {
+                location: 'Foothill',
+                mealperiod: mealperiod
+            },
+            success: function (data) {
+                // Update the content of the data-container div with the received data
+                return updateFoodItems(mealperiod, data);
+            },
+            error: function (error) {
+                console.log('Error fetching data:', error);
+            }
+        });
+    }
 </script>
 
 

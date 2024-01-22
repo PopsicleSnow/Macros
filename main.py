@@ -26,7 +26,6 @@ def query_db(statement):
     data = cursor.fetchall()
     conn.close()
     data = list(chain.from_iterable(data))
-    print(data)
     return data
 
 @app.route('/')
@@ -63,16 +62,24 @@ def get_data():
     mealperiod = request.args.get('mealperiod')
     location = request.args.get('location')
     # Logic to fetch data from the database based on the category
-    if mealperiod and location:
-        data = query(mealperiod, location)
-        return jsonify(data)
+    if mealperiod and location and location in query_db("SELECT name FROM sqlite_master"):
+        try:
+            data = query(mealperiod, location)
+            return jsonify(data)
+        except:
+            return "Error"
+    return "Error"
 
 @app.route('/mealperiods')
 def mealperiods():
     location = request.args.get('location')
-    if location:
-        data = query_db(f"SELECT DISTINCT mealperiod FROM {location}")
-        return jsonify(data)
+    if location in query_db("SELECT name FROM sqlite_master"):
+        try:
+            data = query_db(f"SELECT DISTINCT mealperiod FROM {location}")
+            return jsonify(data)
+        except:
+            return "Error"
+    return "Error"
 
 if __name__ == '__main__':
     app.run(debug=True)

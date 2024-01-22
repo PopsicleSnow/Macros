@@ -75,10 +75,9 @@
         $('#mealperiods-dropdown').addClass('d-none');
         data.forEach(function (foodItem) {
             console.log(foodItem)
-            $('#fooditems').append('<div class="form-check"><input class="form-check-input" type="checkbox" value="'+ foodItem[2] + '" id="'+ foodItem[2] + 
-                                    '"><label class="form-check-label" for="'+ foodItem[2] + '">'
-                                        + foodItem[1] + " - " + foodItem[2] + 
-                                    '</label></div>');
+            $('#fooditems').append('<div class="input-group mb-3"><span class="input-group-text" id="'
+                                        + foodItem[2] + '">'+ foodItem[2] + " - " + foodItem[8]
+                                        + '</span><input type="number" class="form-control" placeholder="0"></div>');
         })
     }
 

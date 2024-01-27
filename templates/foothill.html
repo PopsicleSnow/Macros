@@ -32,9 +32,9 @@
 </div>
 
 <script>
+    // Call the fetchData function when the page loads or when needed
     $(document).ready(function () {
-        fetchMealperiods();
-
+        fetchMealperiods("Foothill");
         $('#mealperiods').on('click', '.dropdown-item', function (event) {
             event.preventDefault();
 
@@ -42,7 +42,7 @@
             var selectedMealPeriod = $(this).text();
 
             // Update the page content based on the selected meal period
-            fetchFoodItems(selectedMealPeriod);
+            fetchFoodItems(selectedMealPeriod, "Foothill");
             $('#foodForm').removeClass('d-none');
         });
     });

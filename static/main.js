@@ -1,26 +1,10 @@
-// Call the fetchData function when the page loads or when needed
-$(document).ready(function () {
-    fetchMealperiods();
-
-    $('#mealperiods').on('click', '.dropdown-item', function (event) {
-        event.preventDefault();
-
-        // Get the selected meal period
-        var selectedMealPeriod = $(this).text();
-
-        // Update the page content based on the selected meal period
-        fetchFoodItems(selectedMealPeriod);
-        $('#foodForm').removeClass('d-none');
-    });
-});
-
 // Function to fetch and display data
-function fetchMealperiods() {
+function fetchMealperiods(loc) {
     // Make an AJAX request to /mealperiods endpoint with appropriate parameters
     $.ajax({
         url: '/mealperiods',
         data: {
-            location: 'Foothill'
+            location: loc
         },
         success: function (data) {
             // Update the content of the data-container div with the received data
@@ -55,12 +39,12 @@ function updateFoodItems(mealPeriod, data) {
     })
 }
 
-function fetchFoodItems(mealperiod) {
+function fetchFoodItems(mealperiod, loc) {
     // Make an AJAX request to /fooditems endpoint with appropriate parameters
     $.ajax({
         url: '/get_data',
         data: {
-            location: 'Foothill',
+            location: loc,
             mealperiod: mealperiod
         },
         success: function (data) {

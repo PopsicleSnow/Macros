@@ -47,6 +47,8 @@ def crossroads():
 
 @app.route('/Foothill')
 def foothill():
+    if request.get_data():
+        return request.get_data()
     if "Foothill" in query_db("SELECT name FROM sqlite_master"):
         return render_template('foothill.html')
     return render_template('closed.html')
@@ -56,6 +58,13 @@ def clarkkerr():
     if "ClarkKerr" in query_db("SELECT name FROM sqlite_master"):
         return render_template('clarkkerr.html')
     return render_template('closed.html')
+
+@app.route('/result')
+def result():
+    if not request.args or request.args.get("location") not in ["Cafe3", "Crossroads", "Foothill", "ClarkKerr"]:
+        return "Error"
+    food = {item: request.args.getlist(item) for item in request.args if item != "location" and request.args.get(item) != ""}
+    return food
 
 @app.route('/get_data')
 def get_data():
@@ -82,4 +91,4 @@ def mealperiods():
     return "Error"
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='10.45.158.230')

@@ -20,7 +20,7 @@ for loc in locations():
             data_to_insert.append((
                     mealperiod, 
                     dishes[mealperiod][dish]["category"], 
-                    dish, 
+                    dish.strip(), 
                     dishes[mealperiod][dish]["Calories (kcal)"], 
                     dishes[mealperiod][dish]["Total Lipid/Fat (g)"], 
                     dishes[mealperiod][dish]["Carbohydrate (g)"], 

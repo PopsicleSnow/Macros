@@ -3,7 +3,7 @@
 {% block title %} Foothill {% endblock %}
 
 {% block content %}
-<div class="container d-flex justify-content-center text-center vh-100">
+<div class="container py-5 justify-content-center text-center">
     <div class="row align-self-center">
         <div class="col">
             <h1>Foothill</h1>
@@ -18,15 +18,16 @@
                 <ul class="dropdown-menu dropdown-menu-dark" id="mealperiods">
                 </ul>
             </div>
-            <form class="d-none" id="foodForm">
-                <div class="card px-5 text-center">
-                    <div class="p-2 card-body" id="fooditems">
-                        <!-- Content here -->
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary mt-2">Submit</button>
-            </form>
         </div>
+    </div>
+    <div class="row align-self-center">
+        <form class="d-none" id="foodForm" action="/result" method="GET">
+            <div class="p-2 card-body" id="fooditems">
+                <input type="hidden" name="location" value="Foothill">
+                <!-- Content here -->
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+        </form>
     </div>
 </div>
 
@@ -75,10 +76,16 @@
         // For simplicity, let's assume a predefined list of food items
         $('#mealperiods-dropdown').addClass('d-none');
         data.forEach(function (foodItem) {
-            console.log(foodItem)
-            $('#fooditems').append('<div class="input-group mb-3"><span class="input-group-text" id="'
-                                        + foodItem[2] + '">'+ foodItem[2] + '</span><span class="input-group-text">' + foodItem[8] + '</span>'
-                                        + '<input type="number" class="form-control" placeholder="0"></div>');
+            $('#fooditems').append('<label for="' + foodItem[2] + '" class="form-label">' + foodItem[2] + '</label>'
+                                        + '<div class="input-group mb-3"><span class="input-group-text">' + foodItem[8] + '</span>'
+                                        + '<input type="number" name="' + foodItem[2] + '" min="0" aria-label="'
+                                        + foodItem[2] + '" class="form-control" id="' + foodItem[2] + '" placeholder="0">'
+                                        + '<input type="hidden" name="' + foodItem[2] + '" value="' + foodItem[3] + '">'
+                                        + '<input type="hidden" name="' + foodItem[2] + '" value="' + foodItem[4] + '">'
+                                        + '<input type="hidden" name="' + foodItem[2] + '" value="' + foodItem[5] + '">'
+                                        + '<input type="hidden" name="' + foodItem[2] + '" value="' + foodItem[6] + '">'
+                                        + '<input type="hidden" name="' + foodItem[2] + '" value="' + foodItem[7] + '">'
+                                        + '</div>');
         })
     }
 
@@ -92,6 +99,7 @@
             },
             success: function (data) {
                 // Update the content of the data-container div with the received data
+                console.log(data);
                 return updateFoodItems(mealperiod, data);
             },
             error: function (error) {

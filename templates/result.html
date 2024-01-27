@@ -5,19 +5,19 @@
 {% block content %}
 <div class="container py-5 justify-content-center">
     <div class="row">
-        <h2>Calories: {{ data["calories"] }}kcal</h2>
+        <h2>Calories: {{ data["calories"]|round|int }}kcal</h2>
     </div>
     <div class="row">
-        <h2>Protein: {{ data["protein"] }}g</h2>
+        <h2>Protein: {{ data["protein"]|round|int }}g</h2>
     </div>
     <div class="row">
-        <h2>Carbs: {{ data["carbs"] }}g</h2>
+        <h2>Carbs: {{ data["carbs"]|round|int }}g</h2>
     </div>
     <div class="row">
-        <h2>Fat: {{ data["fat"] }}g</h2>
+        <h2>Fat: {{ data["fat"]|round|int }}g</h2>
     </div>
     <div class="row">
-        <h2>Sugar: {{ data["sugar"] }}g</h2>
+        <h2>Sugar: {{ data["sugar"]|round|int }}g</h2>
     </div>
 </div>
 {% endblock %}

@@ -61,9 +61,9 @@ def clarkkerr():
 
 @app.route('/result')
 def result():
-    if not request.args or request.args.get("location") not in ["Cafe3", "Crossroads", "Foothill", "ClarkKerr"]:
+    if not request.args:
         return "Error"
-    food = {item: request.args.getlist(item) for item in request.args if item != "location" and request.args.get(item) != ""}
+    food = {item: request.args.getlist(item) for item in request.args if request.args.get(item) != ""}
     # make sure all values are integers
     try:
         food = {item: [float(i) for i in food[item]] for item in food}

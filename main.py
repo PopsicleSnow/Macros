@@ -64,7 +64,22 @@ def result():
     if not request.args or request.args.get("location") not in ["Cafe3", "Crossroads", "Foothill", "ClarkKerr"]:
         return "Error"
     food = {item: request.args.getlist(item) for item in request.args if item != "location" and request.args.get(item) != ""}
-    return food
+    # make sure all values are integers
+    try:
+        food = {item: [float(i) for i in food[item]] for item in food}
+    except:
+        return "Error"
+    # add up all the values
+    data = {"calories": 0, "fat": 0, "carbs": 0, "protein": 0, "sugar": 0}
+    for i in food.values():
+        if len(i) != 6:
+            return "Error"
+        data["calories"] += i[1] * i[0] if i[1] > 0 else 0
+        data["fat"] += i[2] * i[0] if i[2] > 0 else 0
+        data["carbs"] += i[3] * i[0] if i[3] > 0 else 0
+        data["protein"] += i[4] * i[0] if i[4] > 0 else 0
+        data["sugar"] += i[5] * i[0] if i[5] > 0 else 0
+    return render_template('result.html', data=data)
 
 @app.route('/get_data')
 def get_data():
@@ -91,4 +106,4 @@ def mealperiods():
     return "Error"
 
 if __name__ == '__main__':
-    app.run(debug=True, host='10.45.158.230')
+    app.run(debug=True)

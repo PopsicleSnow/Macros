@@ -22,5 +22,5 @@ def menu(loc):
                     recipe_data["servingSize"] = recipe.get("servingSize") + recipe.get("servingSizeUnit")
                     nutrient_data = recipe.get("nutrients").split('|')[:-1]
                     for nutrient in nutrient_list:
-                        recipe_data[nutrient] = nutrient_data[nutrient_list.index(nutrient)]
+                        recipe_data[nutrient] = str(max(0, float(nutrient_data[nutrient_list.index(nutrient)])))
     return data

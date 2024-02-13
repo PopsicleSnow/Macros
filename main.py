@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 from query_database import query
 from itertools import chain
 import sqlite3
+from google.cloud import firestore
 
 #####
 """Web App"""

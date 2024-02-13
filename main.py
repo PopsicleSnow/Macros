@@ -29,20 +29,29 @@ def query_db(statement):
     data = list(chain.from_iterable(data))
     return data
 
+def list_locations():
+    # Initialize Firestore client
+    db = firestore.Client()
+    # Retrieve all collections
+    locations = next(db.collection("locations").stream()).to_dict()["names"]
+    # Extract collection names
+    print(locations)
+    return locations
+
 @app.route('/')
 def index():
-    locations = query_db("SELECT name FROM sqlite_master")
+    locations = list_locations()
     return render_template('index.html', locations=list(locations))
 
 @app.route('/Cafe3')
 def cafe3():
-    if "Cafe3" in query_db("SELECT name FROM sqlite_master"):
+    if "Cafe3" in list_locations():
         return render_template('cafe3.html')
     return render_template('closed.html')
 
 @app.route('/Crossroads')
 def crossroads():
-    if "Crossroads" in query_db("SELECT name FROM sqlite_master"):
+    if "Crossroads" in list_locations():
         return render_template('crossroads.html')
     return render_template('closed.html')
 
@@ -50,13 +59,13 @@ def crossroads():
 def foothill():
     if request.get_data():
         return request.get_data()
-    if "Foothill" in query_db("SELECT name FROM sqlite_master"):
+    if "Foothill" in list_locations():
         return render_template('foothill.html')
     return render_template('closed.html')
 
 @app.route('/ClarkKerr')
 def clarkkerr():
-    if "ClarkKerr" in query_db("SELECT name FROM sqlite_master"):
+    if "ClarkKerr" in list_locations():
         return render_template('clarkkerr.html')
     return render_template('closed.html')
 
@@ -107,4 +116,4 @@ def mealperiods():
     return "Error"
 
 if __name__ == '__main__':
-    app.run(debug=True, host='10.0.0.169')
+    app.run(debug=True)

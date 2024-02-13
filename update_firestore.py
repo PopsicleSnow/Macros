@@ -6,8 +6,16 @@ def upload_menu_to_firestore():
     # Initialize Firestore client
     db = firestore.Client()
 
+    # delete locations collection items
+    location_collection = db.collection("locations")
+    location_docs = location_collection.stream()
+    for doc in location_docs:
+        doc.reference.delete()
+    location_list = []
+
     for loc in locations():
         dishes = menu(loc)
+        location_list.append(loc)
 
         # Reference to the collection
         collection_ref = db.collection(loc)
@@ -40,6 +48,7 @@ def upload_menu_to_firestore():
             doc_ref = collection_ref.document()
             batch.set(doc_ref, data)
         batch.commit()
+    location_collection.document().set({"names": location_list})
 
 # Execute the function to upload menu data to Firestore
 upload_menu_to_firestore()

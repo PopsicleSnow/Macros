@@ -23,24 +23,24 @@ function updateFoodItems(mealPeriod, data) {
     $('#prompt').html('<h1>What did you eat?</h1>');
 
     // You can also add a new dropdown for food items or perform additional AJAX requests here
-    // For simplicity, let's assume a predefined list of food items
     $('#mealperiods-dropdown').addClass('d-none');
     data.forEach(function (foodItem) {
-        $('#fooditems').append('<label for="' + foodItem[2] + '" class="form-label">' + foodItem[2] + '</label>'
-                                    + '<div class="input-group mb-3"><span class="input-group-text">' + foodItem[8] + '</span>'
-                                    + '<input type="number" name="' + foodItem[2] + '" min="0" value="0" aria-label="'
-                                    + foodItem[2] + '" class="form-control" id="' + foodItem[2] + '" placeholder="0">'
-                                    + '<input type="hidden" name="' + foodItem[2] + '" value="' + foodItem[3] + '">'
-                                    + '<input type="hidden" name="' + foodItem[2] + '" value="' + foodItem[4] + '">'
-                                    + '<input type="hidden" name="' + foodItem[2] + '" value="' + foodItem[5] + '">'
-                                    + '<input type="hidden" name="' + foodItem[2] + '" value="' + foodItem[6] + '">'
-                                    + '<input type="hidden" name="' + foodItem[2] + '" value="' + foodItem[7] + '">'
+        var name = foodItem["name"];
+        $('#fooditems').append('<label for="' + foodItem["name"] + '" class="form-label">' + name + '</label>'
+                                    + '<div class="input-group mb-3"><span class="input-group-text">' + foodItem["servingSize"] + '</span>'
+                                    + '<input type="number" name="' + name + '" min="0" value="0" aria-label="'
+                                    + name + '" class="form-control" id="' + name + '" placeholder="0">'
+                                    + '<input type="hidden" name="' + name + '" value="' + foodItem["calories"] + '">'
+                                    + '<input type="hidden" name="' + name + '" value="' + foodItem["fat"] + '">'
+                                    + '<input type="hidden" name="' + name + '" value="' + foodItem["carbs"] + '">'
+                                    + '<input type="hidden" name="' + name + '" value="' + foodItem["protein"] + '">'
+                                    + '<input type="hidden" name="' + name + '" value="' + foodItem["sugar"] + '">'
                                     + '</div>');
     })
 }
 
 function fetchFoodItems(mealperiod, loc) {
-    // Make an AJAX request to /fooditems endpoint with appropriate parameters
+    // Make an AJAX request to /get_data endpoint with appropriate parameters
     $.ajax({
         url: '/get_data',
         data: {
@@ -49,7 +49,6 @@ function fetchFoodItems(mealperiod, loc) {
         },
         success: function (data) {
             // Update the content of the data-container div with the received data
-            console.log(data);
             return updateFoodItems(mealperiod, data);
         },
         error: function (error) {
@@ -58,6 +57,7 @@ function fetchFoodItems(mealperiod, loc) {
     });
 }
 
+$(document).ready(function () {
 document.querySelector('form').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -75,6 +75,8 @@ document.querySelector('form').addEventListener('submit', function(event) {
             validNames.add(input.name);
         }
     }
+    
 
     window.location = this.action + '?' + params.toString();
+});
 });

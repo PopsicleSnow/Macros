@@ -14,6 +14,7 @@ def upload_menu_to_firestore():
     location_list = []
 
     for loc in locations():
+        curr_mealperiods = []
         dishes = menu(loc)
         location_list.append(loc)
 
@@ -41,12 +42,14 @@ def upload_menu_to_firestore():
                     "sugar": dish_data["Sugar (g)"],
                     "servingSize": dish_data["servingSize"]
                 })
+            curr_mealperiods.append(mealperiod)
 
         # Batch upload data to Firestore
         batch = db.batch()
         for data in data_to_insert:
             doc_ref = collection_ref.document()
             batch.set(doc_ref, data)
+        batch.set(collection_ref.document("mealperiods"), {"periods": curr_mealperiods})
         batch.commit()
     location_collection.document().set({"names": location_list})
 

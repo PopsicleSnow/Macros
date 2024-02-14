@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request
-from query_database import query
+from query_firestore import query
 from itertools import chain
 import sqlite3
 from google.cloud import firestore
@@ -30,14 +30,15 @@ def query_db(statement):
     return data
 
 def list_locations():
-    # Initialize Firestore client
     db = firestore.Client()
-    # Retrieve all collections
     locations = next(db.collection("locations").stream()).to_dict()["names"]
-    # Extract collection names
-    print(locations)
     return locations
 
+def list_mealperiods(location):
+    db = firestore.Client()
+    mealperiods = db.collection(location).document("mealperiods").get().to_dict()["periods"]
+    return mealperiods
+    
 @app.route('/')
 def index():
     locations = list_locations()
@@ -96,9 +97,10 @@ def get_data():
     mealperiod = request.args.get('mealperiod')
     location = request.args.get('location')
     # Logic to fetch data from the database based on the category
-    if mealperiod and location and location in query_db("SELECT name FROM sqlite_master"):
+    if mealperiod and location and location in list_locations():
         try:
             data = query(mealperiod, location)
+            print(data)
             return jsonify(data)
         except:
             return "Error"
@@ -107,9 +109,9 @@ def get_data():
 @app.route('/mealperiods')
 def mealperiods():
     location = request.args.get('location')
-    if location in query_db("SELECT name FROM sqlite_master"):
+    if location in list_locations():
         try:
-            data = query_db(f"SELECT DISTINCT mealperiod FROM {location}")
+            data = list_mealperiods(location)
             return jsonify(data)
         except:
             return "Error"

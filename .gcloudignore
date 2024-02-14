@@ -13,7 +13,8 @@
 .git
 .gitignore
 /venv
-.vscode
+.vscode/
+menu.db
 
 # Python pycache:
 __pycache__/

@@ -1,7 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from query_firestore import query
 from itertools import chain
-import sqlite3
 from google.cloud import firestore
 
 #####
@@ -16,10 +15,10 @@ from google.cloud import firestore
 
 app = Flask(__name__)
 
-def dict_factory(cursor, row):
-    return [value for value in row]
+""" def dict_factory(cursor, row):
+    return [value for value in row] """
 
-def query_db(statement):
+""" def query_db(statement):
     conn = sqlite3.connect("menu.db")
     conn.row_factory = dict_factory
     cursor = conn.cursor()
@@ -27,16 +26,16 @@ def query_db(statement):
     data = cursor.fetchall()
     conn.close()
     data = list(chain.from_iterable(data))
-    return data
+    return data """
 
 def list_locations():
     db = firestore.Client()
-    locations = next(db.collection("locations").stream()).to_dict()["names"]
+    locations = db.collection("locations").limit(1).get()[0].to_dict().get("names", [])
     return locations
 
 def list_mealperiods(location):
     db = firestore.Client()
-    mealperiods = db.collection(location).document("mealperiods").get().to_dict()["periods"]
+    mealperiods = db.collection(location).document("mealperiods").get().to_dict().get("periods", [])
     return mealperiods
     
 @app.route('/')
@@ -100,7 +99,6 @@ def get_data():
     if mealperiod and location and location in list_locations():
         try:
             data = query(mealperiod, location)
-            print(data)
             return jsonify(data)
         except:
             return "Error"
@@ -111,8 +109,7 @@ def mealperiods():
     location = request.args.get('location')
     if location in list_locations():
         try:
-            data = list_mealperiods(location)
-            return jsonify(data)
+            return jsonify(list_mealperiods(location))
         except:
             return "Error"
     return "Error"

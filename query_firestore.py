@@ -8,15 +8,10 @@ def query(mealperiod, location):
     collection_ref = db.collection(location)
 
     # Query Firestore for documents matching mealperiod
-    query = collection_ref.where("mealperiod", "==", mealperiod).get()
+    query = collection_ref.where(field_path="mealperiod", op_string="==", value=mealperiod).get()
 
     # Extract data from documents
-    result = []
-    for doc in query:
-        data = doc.to_dict()
-        result.append(data)
-
-    return result
+    return [doc.to_dict() for doc in query]
 
 # Example usage:
 # print(query("Breakfast - Spring", "Foothill"))

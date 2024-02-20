@@ -1,11 +1,10 @@
 from flask import Flask, render_template, jsonify, request
 from query_firestore import query
-from itertools import chain
 from google.cloud import firestore
 
 #####
 """Web App"""
-# next:
+# GCLOUD RUN WEBSITE GIVES 404
 # present option to choose mealperiods
 # update_database.py and menu.py both run locations(), fix to only do once
 # future:
@@ -115,4 +114,4 @@ def mealperiods():
     return "Error"
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="127.0.0.1", port=8080, debug=True)

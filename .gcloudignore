@@ -12,7 +12,7 @@
 # below:
 .git
 .gitignore
-/venv
+venv/
 .vscode/
 menu.db
 

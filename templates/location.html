@@ -25,8 +25,10 @@
             <div class="p-2 card-body" id="fooditems">
                 <!-- Content here -->
             </div>
-            <button type="submit" class="btn btn-primary mt-2">Submit</button>
         </form>
+        <div id="foodSubmit" class="d-none d-grid gap-2">
+            <button form="foodForm" type="submit" class="mx-1 btn btn-primary btn-lg mt-2">Submit</button>
+        </div>
     </div>
 </div>
 
@@ -43,6 +45,7 @@
             // Update the page content based on the selected meal period
             fetchFoodItems(selectedMealPeriod, "{{ data_name }}");
             $('#foodForm').removeClass('d-none');
+            $('#foodSubmit').removeClass('d-none');
         });
     });
 </script>

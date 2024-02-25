@@ -1,0 +1,5 @@
+cron:
+- description: "Update firestore with new menu"
+  url: /tasks/update
+  schedule: every day 03:00
+  timezone: America/Los_Angeles

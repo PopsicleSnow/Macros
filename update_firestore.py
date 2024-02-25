@@ -51,7 +51,4 @@ def upload_menu_to_firestore():
             batch.set(doc_ref, data)
         batch.set(collection_ref.document("mealperiods"), {"periods": curr_mealperiods})
         batch.commit()
-    location_collection.document().set({"names": location_list})
-
-# Execute the function to upload menu data to Firestore
-upload_menu_to_firestore()
+    location_collection.document().set({"names": location_list + ["GBC"]})

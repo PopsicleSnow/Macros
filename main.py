@@ -1,10 +1,11 @@
 from flask import Flask, render_template, jsonify, request
 from query_firestore import query
+from update_firestore import upload_menu_to_firestore
+from locations import locations
 from google.cloud import firestore
 
 #####
 """Web App"""
-# GCLOUD RUN WEBSITE GIVES 404
 # present option to choose mealperiods
 # update_database.py and menu.py both run locations(), fix to only do once
 # future:
@@ -14,20 +15,10 @@ from google.cloud import firestore
 
 app = Flask(__name__)
 
-""" def dict_factory(cursor, row):
-    return [value for value in row] """
-
-""" def query_db(statement):
-    conn = sqlite3.connect("menu.db")
-    conn.row_factory = dict_factory
-    cursor = conn.cursor()
-    cursor.execute(statement)
-    data = cursor.fetchall()
-    conn.close()
-    data = list(chain.from_iterable(data))
-    return data """
-
 def list_locations():
+    return locations()
+
+def list_firebase_locations():
     db = firestore.Client()
     locations = db.collection("locations").limit(1).get()[0].to_dict().get("names", [])
     return locations
@@ -39,34 +30,28 @@ def list_mealperiods(location):
     
 @app.route('/')
 def index():
-    locations = list_locations()
+    locations = list_firebase_locations()
     return render_template('index.html', locations=list(locations))
 
 @app.route('/Cafe3')
 def cafe3():
-    if "Cafe3" in list_locations():
-        return render_template('location.html', name="Cafe 3", data_name="Cafe3")
-    return render_template('closed.html')
+    return render_template('location.html', name="Cafe 3", data_name="Cafe3")
 
 @app.route('/Crossroads')
 def crossroads():
-    if "Crossroads" in list_locations():
-        return render_template('location.html', name="Crossroads", data_name="Crossroads")
-    return render_template('closed.html')
+    return render_template('location.html', name="Crossroads", data_name="Crossroads")
 
 @app.route('/Foothill')
 def foothill():
-    if request.get_data():
-        return request.get_data()
-    if "Foothill" in list_locations():
-        return render_template('location.html', name="Foothill", data_name="Foothill")
-    return render_template('closed.html')
+    return render_template('location.html', name="Foothill", data_name="Foothill")
 
 @app.route('/ClarkKerr')
 def clarkkerr():
-    if "ClarkKerr" in list_locations():
-        return render_template('location.html', name="Clark Kerr", data_name="ClarkKerr")
-    return render_template('closed.html')
+    return render_template('location.html', name="Clark Kerr", data_name="ClarkKerr")
+
+@app.route('/GBC')
+def gbc():
+    return render_template('location.html', name="GBC", data_name="GBC")
 
 @app.route('/result')
 def result():
@@ -106,11 +91,18 @@ def get_data():
 @app.route('/mealperiods')
 def mealperiods():
     location = request.args.get('location')
-    if location in list_locations():
+    if location and location in list_locations():
         try:
             return jsonify(list_mealperiods(location))
         except:
             return "Error"
+    return "Error"
+
+@app.route('/tasks/update')
+def update():
+    if request.headers['X-Appengine-Cron'] == "true":
+        upload_menu_to_firestore()
+        return "Updated"
     return "Error"
 
 if __name__ == '__main__':

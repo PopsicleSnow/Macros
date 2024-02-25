@@ -45,13 +45,13 @@ def index():
 @app.route('/Cafe3')
 def cafe3():
     if "Cafe3" in list_locations():
-        return render_template('cafe3.html')
+        return render_template('location.html', name="Cafe 3", data_name="Cafe3")
     return render_template('closed.html')
 
 @app.route('/Crossroads')
 def crossroads():
     if "Crossroads" in list_locations():
-        return render_template('crossroads.html')
+        return render_template('location.html', name="Crossroads", data_name="Crossroads")
     return render_template('closed.html')
 
 @app.route('/Foothill')
@@ -59,13 +59,13 @@ def foothill():
     if request.get_data():
         return request.get_data()
     if "Foothill" in list_locations():
-        return render_template('foothill.html')
+        return render_template('location.html', name="Foothill", data_name="Foothill")
     return render_template('closed.html')
 
 @app.route('/ClarkKerr')
 def clarkkerr():
     if "ClarkKerr" in list_locations():
-        return render_template('clarkkerr.html')
+        return render_template('location.html', name="Clark Kerr", data_name="ClarkKerr")
     return render_template('closed.html')
 
 @app.route('/result')

@@ -13,9 +13,10 @@ def upload_menu_to_firestore():
         doc.reference.delete()
     location_list = []
 
-    for loc in locations():
+    locations_requests = locations()
+    for loc in locations_requests:
         curr_mealperiods = []
-        dishes = menu(loc)
+        dishes = menu(locations_requests[loc])
         location_list.append(loc)
 
         # Reference to the collection

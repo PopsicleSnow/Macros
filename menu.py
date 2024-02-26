@@ -1,9 +1,8 @@
-from locations import locations
 from lxml import etree as ET
 
-def menu(loc):
+def menu(locations_request):
     # Get xml from web request
-    loc = locations()[loc]
+    loc = locations_request
     root = ET.fromstring(loc.text)
 
     # Create dictionary for each dish

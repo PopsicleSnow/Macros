@@ -1,4 +1,5 @@
 from math import inf, isinf
+from re import T
 from flask import Flask, render_template, jsonify, request
 from query_firestore import query
 from update_firestore import upload_menu_to_firestore
@@ -29,6 +30,16 @@ def list_mealperiods(location):
     mealperiods = db.collection(location).document("mealperiods").get().to_dict().get("periods", [])
     return mealperiods
     
+def number_parser(value): 
+    try:
+        roundtest = round(value)
+        inttest = int(value)
+        if value < 1:
+            return 0
+        return value
+    except:
+        return 0
+
 @app.route('/')
 def index():
     locations = list_firebase_locations()
@@ -67,11 +78,14 @@ def result():
     # add up all the values
     data = {"calories": 0, "fat": 0, "carbs": 0, "protein": 0, "sugar": 0}
     for i in food.values():
-        if i[0] < 1 or isinf(i[0]):
-            i[0] = 0
-        i[0] = int(i[0])
         if len(i) != 6:
             return "Error"
+        i[0] = number_parser(i[0])
+        i[1] = number_parser(i[1])
+        i[2] = number_parser(i[2])
+        i[3] = number_parser(i[3])
+        i[4] = number_parser(i[4])
+        i[5] = number_parser(i[5])
         data["calories"] += i[1] * i[0] if i[1] > 0 and not isinf(i[1]) else 0
         data["fat"] += i[2] * i[0] if i[2] > 0 and not isinf(i[2]) else 0
         data["carbs"] += i[3] * i[0] if i[3] > 0 and not isinf(i[3]) else 0

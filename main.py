@@ -1,3 +1,4 @@
+from math import inf
 from flask import Flask, render_template, jsonify, request
 from query_firestore import query
 from update_firestore import upload_menu_to_firestore
@@ -68,11 +69,11 @@ def result():
     for i in food.values():
         if len(i) != 6:
             return "Error"
-        data["calories"] += i[1] * i[0] if i[1] > 0 else 0
-        data["fat"] += i[2] * i[0] if i[2] > 0 else 0
-        data["carbs"] += i[3] * i[0] if i[3] > 0 else 0
-        data["protein"] += i[4] * i[0] if i[4] > 0 else 0
-        data["sugar"] += i[5] * i[0] if i[5] > 0 else 0
+        data["calories"] += i[1] * i[0] if i[1] > 0 and i[1] != inf else 0
+        data["fat"] += i[2] * i[0] if i[2] > 0 and i[2] != inf else 0
+        data["carbs"] += i[3] * i[0] if i[3] > 0 and i[3] != inf else 0
+        data["protein"] += i[4] * i[0] if i[4] > 0 and i[4] != inf else 0
+        data["sugar"] += i[5] * i[0] if i[5] > 0 and i[5] != inf else 0
     return render_template('result.html', data=data)
 
 @app.route('/get_data')

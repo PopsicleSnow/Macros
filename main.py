@@ -80,23 +80,23 @@ def get_data():
     mealperiod = request.args.get('mealperiod')
     location = request.args.get('location')
     # Logic to fetch data from the database based on the category
-    if mealperiod and location and location in list_locations():
+    if mealperiod and location and location in list_firebase_locations():
         try:
             data = query(mealperiod, location)
             return jsonify(data)
         except:
             return "Error"
-    return "Error"
+    return "Mealperiod and/or location doesn't exist or is not provided"
 
 @app.route('/mealperiods')
 def mealperiods():
     location = request.args.get('location')
-    if location and location in list_locations():
+    if location and location in list_firebase_locations():
         try:
             return jsonify(list_mealperiods(location))
         except:
             return "Error"
-    return "Error"
+    return "Location doesn't exist or not provided"
 
 @app.route('/tasks/update')
 def update():

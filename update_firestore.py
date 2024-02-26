@@ -1,3 +1,4 @@
+from distutils.command import upload
 from google.cloud import firestore
 from locations import locations
 from menu import menu
@@ -6,13 +7,13 @@ def upload_menu_to_firestore():
     # Initialize Firestore client
     db = firestore.Client()
 
-    # delete locations collection items
+    # reference to location collection
     location_collection = db.collection("locations")
-    location_docs = location_collection.stream()
-    for doc in location_docs:
-        doc.reference.delete()
+    # create empty locations list
     location_list = []
 
+    # start batch
+    batch = db.batch()
     locations_requests = locations()
     for loc in locations_requests:
         curr_mealperiods = []
@@ -44,12 +45,14 @@ def upload_menu_to_firestore():
                     "servingSize": dish_data["servingSize"]
                 })
             curr_mealperiods.append(mealperiod)
-
+        
         # Batch upload data to Firestore
-        batch = db.batch()
         for data in data_to_insert:
             doc_ref = collection_ref.document()
             batch.set(doc_ref, data)
         batch.set(collection_ref.document("mealperiods"), {"periods": curr_mealperiods})
-        batch.commit()
-    location_collection.document().set({"names": location_list + ["GBC"]})
+    # update locations collection
+    batch.set(location_collection.document("locations"), {"names": location_list + ["GBC"]})
+    batch.commit()
+
+#upload_menu_to_firestore()

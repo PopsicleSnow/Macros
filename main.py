@@ -65,6 +65,10 @@ def clarkkerr():
 def gbc():
     return render_template('location.html', name="GBC", data_name="GBC")
 
+@app.route('/Browns')
+def browns():
+    return render_template('location.html', name="Browns", data_name="Browns")
+
 @app.route('/result')
 def result():
     if not request.args:

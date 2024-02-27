@@ -8,10 +8,7 @@ from google.cloud import firestore
 
 #####
 """Web App"""
-# present option to choose mealperiods
-# update_database.py and menu.py both run locations(), fix to only do once
-# future:
-# show location options, mealperiod options, in same page, one after another
+# group foods by category
 # save foods to historical database
 #####
 

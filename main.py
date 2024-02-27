@@ -22,7 +22,7 @@ def list_locations():
 
 def list_firebase_locations():
     db = firestore.Client()
-    locations = db.collection("locations").limit(1).get()[0].to_dict().get("names", [])
+    locations = db.collection("locations").document("locations").get().to_dict().get("names", [])
     return locations
 
 def list_mealperiods(location):

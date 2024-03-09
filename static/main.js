@@ -24,6 +24,9 @@ function updateFoodItems(mealPeriod, data) {
 
     // You can also add a new dropdown for food items or perform additional AJAX requests here
     $('#mealperiods-dropdown').addClass('d-none');
+    data.sort(function(a, b) {
+        return b.category.localeCompare(a.category);
+    });
     data.forEach(function (foodItem) {
         var name = foodItem["name"];
         $('#fooditems').append('<label for="' + foodItem["name"] + '" class="form-label">' + name + '</label>'

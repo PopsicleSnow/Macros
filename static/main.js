@@ -31,7 +31,7 @@ function updateFoodItems(mealPeriod, data) {
         var name = foodItem["name"];
         $('#fooditems').append('<label for="' + foodItem["name"] + '" class="form-label">' + name + '</label>'
                                     + '<div class="input-group mb-3">'
-                                    + '<input type="number" name="' + name + '" min="0" max="50" value="0" aria-label="'
+                                    + '<input type="number" name="' + name + '" min="0" max="50" aria-label="'
                                     + name + '" class="form-control" id="' + name + '" placeholder="0">'
                                     + '<input type="hidden" name="' + name + '" value="' + foodItem["calories"] + '">'
                                     + '<input type="hidden" name="' + name + '" value="' + foodItem["fat"] + '">'

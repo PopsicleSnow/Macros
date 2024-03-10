@@ -31,7 +31,7 @@ def number_parser(value):
     try:
         roundtest = round(value)
         inttest = int(value)
-        if value < 1:
+        if value < 0.1:
             return 0
         return value
     except:
@@ -81,12 +81,7 @@ def result():
     for i in food.values():
         if len(i) != 6:
             return "Error"
-        i[0] = number_parser(i[0])
-        i[1] = number_parser(i[1])
-        i[2] = number_parser(i[2])
-        i[3] = number_parser(i[3])
-        i[4] = number_parser(i[4])
-        i[5] = number_parser(i[5])
+        i = [number_parser(j) for j in i]
         data["calories"] += i[1] * i[0] if i[1] > 0 and not isinf(i[1]) else 0
         data["fat"] += i[2] * i[0] if i[2] > 0 and not isinf(i[2]) else 0
         data["carbs"] += i[3] * i[0] if i[3] > 0 and not isinf(i[3]) else 0

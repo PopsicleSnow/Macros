@@ -66,6 +66,10 @@ def gbc():
 def browns():
     return render_template('location.html', name="Browns", data_name="Browns")
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/result')
 def result():
     if not request.args:

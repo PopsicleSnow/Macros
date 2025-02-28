@@ -1,4 +1,3 @@
-from distutils.command import upload
 from google.cloud import firestore
 from locations import locations
 from menu import menu

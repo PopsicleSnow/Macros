@@ -70,11 +70,11 @@ def browns():
 def about():
     return render_template('about.html')
 
-@app.route('/result')
+@app.route('/result', methods=['POST'])
 def result():
-    if not request.args:
+    if not request.form:
         return "Error"
-    food = {item: request.args.getlist(item) for item in request.args if request.args.get(item) != ""}
+    food = {item: request.form.getlist(item) for item in request.form if request.form.get(item) != ""}
     # make sure all values are integers
     try:
         food = {item: [float(i) for i in food[item]] for item in food}

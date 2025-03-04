@@ -80,6 +80,15 @@ document.querySelector('form').addEventListener('submit', function(event) {
     }
     
 
-    window.location = this.action + '?' + params.toString();
+            // Use fetch to send a POST request
+        fetch(this.action, {
+            method: 'POST',
+            body: params
+        }).then(response => response.text())
+          .then(html => {
+              document.open();
+              document.write(html);
+              document.close();
+          }).catch(error => console.log('Error:', error));
 });
 });

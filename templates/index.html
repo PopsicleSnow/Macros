@@ -16,7 +16,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-dark">
                     {% for location in locations %}
-                    <li><a class="dropdown-item" href="/{{ location }}">{{ location }}</a></li>
+                    <li><a class="dropdown-item" href="/{{ location }}">{{ get_display_name(location) }}</a></li>
                     {% endfor %}
                 </ul>
             </div>

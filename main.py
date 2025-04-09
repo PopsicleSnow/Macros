@@ -14,6 +14,19 @@ from google.cloud import firestore
 
 app = Flask(__name__)
 
+LOCATION_DISPLAY_NAMES = {
+    "Cafe3": "Cafe 3",
+    "ClarkKerr": "Clark Kerr",
+    "Foothill": "Foothill",
+    "Crossroads": "Crossroads",
+    "GBC": "GBC",
+    "Browns": "Browns"
+}
+
+def get_display_name(location_key):
+    """Convert internal location key to display name"""
+    return LOCATION_DISPLAY_NAMES.get(location_key, location_key)
+
 def list_locations():
     return locations()
 
@@ -40,7 +53,8 @@ def number_parser(value):
 @app.route('/')
 def index():
     locations = list_firebase_locations()
-    return render_template('index.html', locations=list(locations))
+    return render_template('index.html', locations=list(locations),
+                          get_display_name=get_display_name)
 
 @app.route('/Cafe3')
 def cafe3():

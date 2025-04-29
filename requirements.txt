@@ -28,6 +28,6 @@ pyasn1-modules==0.3.0
 pytz==2023.3.post1
 requests==2.31.0
 rsa==4.9
-urllib3==1.26.15
+urllib3==1.26.19
 Werkzeug==3.0.6
 zipp==3.17.0

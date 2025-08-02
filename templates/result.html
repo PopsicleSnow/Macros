@@ -3,21 +3,48 @@
 {% block title %} Results {% endblock %}
 
 {% block content %}
-<div class="container py-5 justify-content-center">
-    <div class="row">
-        <h2>Calories: {{ data["calories"]|round|int }}kcal</h2>
-    </div>
-    <div class="row">
-        <h2>Protein: {{ data["protein"]|round|int }}g</h2>
-    </div>
-    <div class="row">
-        <h2>Carbs: {{ data["carbs"]|round|int }}g</h2>
-    </div>
-    <div class="row">
-        <h2>Fat: {{ data["fat"]|round|int }}g</h2>
-    </div>
-    <div class="row">
-        <h2>Sugar: {{ data["sugar"]|round|int }}g</h2>
+<div class="container py-5 d-flex justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="main-card fade-in-up text-center">
+            <h1 class="display-6 mb-4">Your Nutrition Summary</h1>
+            
+            <div class="row g-3">
+                <div class="col-6">
+                    <div class="p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
+                        <h3 class="h5 text-warning mb-1">Calories</h3>
+                        <p class="h4 mb-0">{{ data["calories"]|round|int }}<span class="small text-muted">kcal</span></p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
+                        <h3 class="h5 text-info mb-1">Protein</h3>
+                        <p class="h4 mb-0">{{ data["protein"]|round|int }}<span class="small text-muted">g</span></p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
+                        <h3 class="h5 text-success mb-1">Carbs</h3>
+                        <p class="h4 mb-0">{{ data["carbs"]|round|int }}<span class="small text-muted">g</span></p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
+                        <h3 class="h5 text-danger mb-1">Fat</h3>
+                        <p class="h4 mb-0">{{ data["fat"]|round|int }}<span class="small text-muted">g</span></p>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
+                        <h3 class="h5 text-secondary mb-1">Sugar</h3>
+                        <p class="h4 mb-0">{{ data["sugar"]|round|int }}<span class="small text-muted">g</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <a href="/" class="btn btn-primary">Calculate Another Meal</a>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

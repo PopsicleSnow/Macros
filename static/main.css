@@ -1,13 +1,270 @@
+/* Typography and Base Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+    min-height: 100vh;
+    padding-bottom: 2.5rem; /* Small padding for subtle bottom bar */
+}
+
+/* Header Styles */
+h1 {
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    margin-bottom: 1.5rem;
+}
+
+/* Card Styles */
+.main-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Button Enhancements */
+.btn {
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0.75rem 1.5rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+/* Dropdown Styles */
 .dropdown-menu {
-    max-height:200px;
-    overflow-y:auto;
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(33, 37, 41, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-#fooditems {
-    max-height:300px;
-    overflow-y:auto;
+.dropdown-item {
+    border-radius: 8px;
+    margin: 0.25rem;
+    transition: background-color 0.2s ease;
 }
 
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Food Items Section - styles consolidated below */
+
+/* Form Styles */
 form {
     text-align: left;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #e9ecef;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Navigation */
+.navbar {
+    border-radius: 0;
+    backdrop-filter: blur(10px);
+    background: rgba(33, 37, 41, 0.7) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.25rem 1rem !important;
+    min-height: auto;
+}
+
+.navbar .btn {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6) !important;
+    padding: 0.25rem 0.5rem;
+    background: none !important;
+    border: none !important;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.navbar .btn:hover {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.navbar-text {
+    margin-bottom: 0;
+}
+
+/* Animations */
+/* Slide up from bottom animation */
+@keyframes slideUpFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-up-from-bottom {
+    opacity: 0;
+    animation: slideUpFromBottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation-fill-mode: both;
+}
+
+/* Staggered animations for multiple elements */
+.slide-up-delay-1 {
+    opacity: 0;
+    animation: slideUpFromBottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation-delay: 0.1s;
+    animation-fill-mode: both;
+}
+
+.slide-up-delay-2 {
+    opacity: 0;
+    animation: slideUpFromBottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation-delay: 0.2s;
+    animation-fill-mode: both;
+}
+
+/* Category Styles */
+.category-header h5 {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+/* +1 Button Styling */
+.add-one-btn {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    transition: all 0.2s ease;
+}
+
+.add-one-btn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.add-one-btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Food Items Container - Enhanced scrollbar and padding */
+#fooditems {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #6c757d transparent;
+}
+
+#fooditems::-webkit-scrollbar {
+    width: 6px;
+}
+
+#fooditems::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#fooditems::-webkit-scrollbar-thumb {
+    background: #6c757d;
+    border-radius: 3px;
+}
+
+
+
+/* Responsive Improvements */
+@media (max-width: 768px) {
+    .main-card {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1.2rem;
+    }
+    
+    .category-header h5 {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-card {
+        margin: 0.5rem;
+        padding: 1rem;
+        border-radius: 12px;
+    }
+    
+    .display-5, .display-6 {
+        font-size: 1.5rem;
+    }
+    
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .navbar .btn {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+    
+    .add-one-btn {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
+    
+    body {
+        padding-bottom: 2rem; /* Even less padding on mobile */
+    }
 }

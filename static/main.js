@@ -33,7 +33,7 @@ function updateFoodItems(mealPeriod, data) {
             '<div id="fooditems" class="mb-4"></div>' +
             '</form>' +
             '<div class="text-center">' +
-            '<button form="foodForm" type="submit" class="btn btn-primary btn-lg px-5">Calculate My Macros</button>' +
+            '<button form="foodForm" type="submit" class="btn btn-primary btn-lg px-5" id="calculateBtn" disabled>Calculate My Macros</button>' +
             '<p class="mt-3 small text-muted"><em>*Each serving size is equivalent to 1 piece/slice/scoop</em></p>' +
             '</div>' +
             '</div>' +
@@ -43,6 +43,9 @@ function updateFoodItems(mealPeriod, data) {
         
         // Process and add food items
         populateFoodItems(data);
+        
+        // Set up validation after food items are loaded
+        setupFormValidation();
     });
 }
 
@@ -96,6 +99,41 @@ function populateFoodItems(data) {
     });
 }
 
+function setupFormValidation() {
+    // Function to check if at least one input has a value
+    function validateForm() {
+        let hasValue = false;
+        $('#fooditems input[type="number"]').each(function() {
+            const value = parseFloat($(this).val()) || 0;
+            if (value > 0) {
+                hasValue = true;
+                return false; // Break out of loop early
+            }
+        });
+        
+        // Enable/disable submit button based on validation
+        const submitBtn = $('#calculateBtn');
+        if (hasValue) {
+            submitBtn.prop('disabled', false).removeClass('btn-secondary').addClass('btn-primary');
+        } else {
+            submitBtn.prop('disabled', true).removeClass('btn-primary').addClass('btn-secondary');
+        }
+    }
+    
+    // Add event listeners to all number inputs
+    $(document).on('input change', '#fooditems input[type="number"]', function() {
+        validateForm();
+    });
+    
+    // Also validate when +1 buttons are clicked
+    $(document).on('click', '.add-one-btn', function() {
+        setTimeout(validateForm, 10); // Small delay to ensure input value is updated
+    });
+    
+    // Initial validation
+    validateForm();
+}
+
 function fetchFoodItems(mealperiod, loc) {
     // Make an AJAX request to /get_data endpoint with appropriate parameters
     $.ajax({
@@ -145,6 +183,11 @@ $(document).ready(function () {
     // Form submission handler - using event delegation for dynamically created forms
     $(document).on('submit', '#foodForm', function(event) {
         event.preventDefault();
+        
+        // Check if submit button is disabled
+        if ($('#calculateBtn').prop('disabled')) {
+            return false;
+        }
         
         const params = new URLSearchParams();
         const invalidNames = new Set();

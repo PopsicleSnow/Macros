@@ -46,6 +46,13 @@ h1 {
     background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
 }
 
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
 /* Dropdown Styles */
 .dropdown-menu {
     max-height: 200px;
@@ -123,6 +130,11 @@ form {
     background: none !important;
     transform: none !important;
     box-shadow: none !important;
+}
+
+.navbar .btn:disabled {
+    opacity: 1;
+    cursor: default;
 }
 
 .navbar-text {

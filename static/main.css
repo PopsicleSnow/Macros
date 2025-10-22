@@ -227,8 +227,138 @@ form {
     background: #6c757d;
     border-radius: 3px;
 }
+/* Filter Tabs (Pill-Shaped Segmented Control) */
+.filter-tabs {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
 
+.filter-btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: none;
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+/* Location Cards */
+.location-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    display: block;
+    transition: transform 300ms ease, opacity 300ms ease, box-shadow 300ms ease, border-color 300ms ease, background 300ms ease;
+    opacity: 1;
+    transform: scale(1);
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, opacity;
+}
+
+.location-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.location-card h3 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin: 0;
+    color: white;
+}
+
+/* Fade animation for filtering */
+.location-card.fade-out {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+}
+
+.location-card.hidden {
+    display: none;
+}
+
+/* Pre-enter state for newly shown cards */
+.location-card.pre-enter {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+}
+
+/* Grid Container */
+.locations-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* Responsive Grid Columns */
+@media (min-width: 992px) {
+    .locations-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .locations-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .locations-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .location-card {
+        padding: 1.5rem 1rem;
+        min-height: 100px;
+    }
+
+    .location-card h3 {
+        font-size: 1rem;
+    }
+
+    .filter-tabs {
+        gap: 0.5rem;
+    }
+
+    .filter-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.85rem;
+    }
+}
 
 /* Responsive Improvements */
 @media (max-width: 768px) {

@@ -20,12 +20,34 @@ LOCATION_DISPLAY_NAMES = {
     "crossroads": "Crossroads",
     "gbc": "GBC",
     "browns": "Browns",
-    "localxdesign": "Local x Design"
+    "localxdesign": "Local x Design",
+    "ladleandleaf": "Ladle and Leaf",
+    "undergroundpizza": "Underground Pizza",
+    "monsoon": "Monsoon",
+    "almaregelato": "Almare Gelato"
+}
+
+LOCATION_CATEGORIES = {
+    "cafe3": "dining",
+    "clarkkerr": "dining",
+    "foothill": "dining",
+    "crossroads": "dining",
+    "gbc": "cafe",
+    "browns": "cafe",
+    "localxdesign": "cafe",
+    "ladleandleaf": "studentunion",
+    "undergroundpizza": "studentunion",
+    "monsoon": "studentunion",
+    "almaregelato": "studentunion"
 }
 
 def get_display_name(location_key):
     """Convert internal location key to display name"""
     return LOCATION_DISPLAY_NAMES.get(location_key, location_key)
+
+def get_location_category(location_key):
+    """Get category for a location"""
+    return LOCATION_CATEGORIES.get(location_key, "other")
 
 def list_locations():
     return locations()
@@ -54,7 +76,8 @@ def number_parser(value):
 def index():
     locations = list_firebase_locations()
     return render_template('index.html', locations=list(locations),
-                          get_display_name=get_display_name)
+                          get_display_name=get_display_name,
+                          get_category=get_location_category)
 
 @app.route('/cafe3')
 def cafe3():
@@ -83,6 +106,22 @@ def localxdesign():
 @app.route('/browns')
 def browns():
     return render_template('location.html', name=LOCATION_DISPLAY_NAMES["browns"], data_name="browns")
+
+@app.route('/ladleandleaf')
+def ladleandleaf():
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["ladleandleaf"], data_name="ladleandleaf")
+
+@app.route('/undergroundpizza')
+def undergroundpizza():
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["undergroundpizza"], data_name="undergroundpizza")
+
+@app.route('/monsoon')
+def monsoon():
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["monsoon"], data_name="monsoon")
+
+@app.route('/almaregelato')
+def almaregelato():
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["almaregelato"], data_name="almaregelato")
 
 @app.route('/about')
 def about():

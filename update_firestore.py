@@ -16,7 +16,17 @@ def upload_menu_to_firestore():
     locations_requests = locations()
     for loc in locations_requests:
         curr_mealperiods = []
-        dishes = menu(locations_requests[loc])
+
+        # Handle both single-location and multi-location venues
+        location_data = locations_requests[loc]
+        if isinstance(location_data, tuple):
+            # Multi-location venue: (request, category_filter)
+            request_obj, category_filter = location_data
+            dishes = menu(request_obj, category_filter=category_filter)
+        else:
+            # Single-location venue: just the request
+            dishes = menu(location_data)
+
         location_list.append(loc)
 
         # Reference to the collection
@@ -54,4 +64,4 @@ def upload_menu_to_firestore():
     batch.set(location_collection.document("locations"), {"names": location_list + ["browns"]})
     batch.commit()
 
-upload_menu_to_firestore()
+#upload_menu_to_firestore()

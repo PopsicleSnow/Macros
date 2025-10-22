@@ -3,28 +3,122 @@
 {% block title %} Macros {% endblock %}
 
 {% block content %}
-<div class="container d-flex justify-content-center text-center vh-100 pb-5">
-    <div class="row align-self-center">
+<div class="container text-center py-5">
+    <div class="row">
         <div class="col">
             <div class="mb-5">
                 <h1 class="display-4 fw-light mb-3">UC Berkeley Macros</h1>
                 <p class="lead text-muted mb-5">Calculate your nutrition from dining hall meals</p>
             </div>
-            
+
+            <!-- Filter Tabs (Pill-Shaped Segmented Control) -->
             <div class="mb-4">
                 <h2 class="h5 mb-4 text-light">Choose your Dining Hall/Cafe</h2>
-                <div class="dropdown-center">
-                    <button class="btn btn-secondary dropdown-toggle btn-lg" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Select Location
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-dark">
-                        {% for location in locations %}
-                        <li><a class="dropdown-item" href="/{{ location }}">{{ get_display_name(location) }}</a></li>
-                        {% endfor %}
-                    </ul>
+                <div class="filter-tabs">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="dining">Dining Halls</button>
+                    <button class="filter-btn" data-filter="cafe">Cafes</button>
+                    <button class="filter-btn" data-filter="studentunion">Student Union</button>
                 </div>
+            </div>
+
+            <!-- Locations Card Grid -->
+            <div class="locations-grid">
+                {% for location in locations %}
+                <a href="/{{ location }}"
+                   class="location-card"
+                   data-category="{{ get_category(location) }}">
+                    <h3>{{ get_display_name(location) }}</h3>
+                </a>
+                {% endfor %}
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Smooth filter with FLIP animation
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const container = document.querySelector('.locations-grid');
+
+        function getVisibleCards() {
+            return Array.from(container.querySelectorAll('.location-card:not(.hidden)'));
+        }
+
+        function applyFilter(filter) {
+            // 1) First: capture current positions for visible cards
+            const firstRects = new Map();
+            getVisibleCards().forEach(card => {
+                firstRects.set(card, card.getBoundingClientRect());
+            });
+
+            // 2) Toggle visibility
+            const allCards = Array.from(container.querySelectorAll('.location-card'));
+            allCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                const shouldShow = (filter === 'all' || category === filter);
+
+                if (shouldShow) {
+                    if (card.classList.contains('hidden')) {
+                        // Prepare entering state before measuring 'last'
+                        card.classList.remove('hidden');
+                        card.classList.add('pre-enter');
+                    }
+                } else {
+                    if (!card.classList.contains('hidden')) {
+                        card.classList.add('will-hide');
+                    }
+                }
+            });
+
+            // Remove from flow immediately so layout reflows for "last" measurement
+            container.querySelectorAll('.will-hide').forEach(card => {
+                card.classList.remove('will-hide');
+                card.classList.add('hidden');
+            });
+
+            // 3) Last: capture new positions
+            const visibleAfter = getVisibleCards();
+
+            // 4) Invert and Play for moved cards
+            visibleAfter.forEach(card => {
+                const first = firstRects.get(card);
+                const last = card.getBoundingClientRect();
+                if (first) {
+                    const dx = first.left - last.left;
+                    const dy = first.top - last.top;
+                    if (dx !== 0 || dy !== 0) {
+                        // Set initial transform without transition
+                        card.style.transition = 'transform 0s, opacity 0s';
+                        card.style.transform = `translate(${dx}px, ${dy}px)`;
+                        // Force reflow
+                        void card.getBoundingClientRect();
+                        // Then animate to final position
+                        card.style.transition = '';
+                        card.style.transform = '';
+                    }
+                }
+            });
+
+            // 5) Enter animation for newly shown cards
+            requestAnimationFrame(() => {
+                container.querySelectorAll('.pre-enter').forEach(card => {
+                    card.classList.remove('pre-enter');
+                });
+            });
+        }
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                // Update active button state
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                // Apply smooth filter
+                applyFilter(filter);
+            });
+        });
+    });
+</script>
 {% endblock %}

@@ -1,5 +1,4 @@
 from math import inf, isinf
-from re import T
 from flask import Flask, render_template, jsonify, request
 from query_firestore import query
 from update_firestore import upload_menu_to_firestore
@@ -15,12 +14,13 @@ from google.cloud import firestore
 app = Flask(__name__)
 
 LOCATION_DISPLAY_NAMES = {
-    "Cafe3": "Cafe 3",
-    "ClarkKerr": "Clark Kerr",
-    "Foothill": "Foothill",
-    "Crossroads": "Crossroads",
-    "GBC": "GBC",
-    "Browns": "Browns"
+    "cafe3": "Cafe 3",
+    "clarkkerr": "Clark Kerr",
+    "foothill": "Foothill",
+    "crossroads": "Crossroads",
+    "gbc": "GBC",
+    "browns": "Browns",
+    "localxdesign": "Local x Design"
 }
 
 def get_display_name(location_key):
@@ -56,29 +56,33 @@ def index():
     return render_template('index.html', locations=list(locations),
                           get_display_name=get_display_name)
 
-@app.route('/Cafe3')
+@app.route('/cafe3')
 def cafe3():
-    return render_template('location.html', name="Cafe 3", data_name="Cafe3")
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["cafe3"], data_name="cafe3")
 
-@app.route('/Crossroads')
+@app.route('/crossroads')
 def crossroads():
-    return render_template('location.html', name="Crossroads", data_name="Crossroads")
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["crossroads"], data_name="crossroads")
 
-@app.route('/Foothill')
+@app.route('/foothill')
 def foothill():
-    return render_template('location.html', name="Foothill", data_name="Foothill")
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["foothill"], data_name="foothill")
 
-@app.route('/ClarkKerr')
+@app.route('/clarkkerr')
 def clarkkerr():
-    return render_template('location.html', name="Clark Kerr", data_name="ClarkKerr")
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["clarkkerr"], data_name="clarkkerr")
 
-@app.route('/GBC')
+@app.route('/gbc')
 def gbc():
-    return render_template('location.html', name="GBC", data_name="GBC")
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["gbc"], data_name="gbc")
 
-@app.route('/Browns')
+@app.route('/localxdesign')
+def localxdesign():
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["localxdesign"], data_name="localxdesign")
+
+@app.route('/browns')
 def browns():
-    return render_template('location.html', name="Browns", data_name="Browns")
+    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["browns"], data_name="browns")
 
 @app.route('/about')
 def about():

@@ -43,7 +43,7 @@
             
             <div class="mt-4">
                 {% if food_items %}
-                <a href="shortcuts://run-shortcut?name=LogCalMacros&input=text&text={% for item in food_items %}name={{ item.name|urlencode }}&calories={{ item.calories|round(2) }}&fat={{ item.fat|round(2) }}&sugar={{ item.sugar|round(2) }}&carbs={{ item.carbs|round(2) }}&protein={{ item.protein|round(2) }}{% if not loop.last %}%0A{% endif %}{% endfor %}"
+                <a href="shortcuts://run-shortcut?name=LogCalMacros&input=text&text={% for item in food_items %}name={{ item.name|urlencode }}%26calories={{ item.calories|round(2) }}%26fat={{ item.fat|round(2) }}%26sugar={{ item.sugar|round(2) }}%26carbs={{ item.carbs|round(2) }}%26protein={{ item.protein|round(2) }}{% if not loop.last %}%0A{% endif %}{% endfor %}"
                    class="btn btn-success btn-lg mb-3 w-100">
                     Log to Foodnoms
                 </a>
@@ -69,11 +69,5 @@
     </div>
 </div>
 
-<script>
-    // Console log all food items in a single statement with newlines
-    {% if food_items %}
-        console.log("{% for item in food_items %}name={{ item.name }}&calories={{ item.calories|round(2) }}&fat={{ item.fat|round(2) }}&sugar={{ item.sugar|round(2) }}&carbs={{ item.carbs|round(2) }}&protein={{ item.protein|round(2) }}{% if not loop.last %}\n{% endif %}{% endfor %}");
-    {% endif %}
-</script>
 {% endblock %}
 

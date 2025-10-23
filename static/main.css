@@ -322,6 +322,53 @@ form {
     margin-top: 2rem;
 }
 
+/* Meal Periods Grid */
+.mealperiods-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Meal Period Cards */
+.mealperiod-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    color: white;
+    display: block;
+    transition: transform 300ms ease, opacity 300ms ease, box-shadow 300ms ease, border-color 300ms ease, background 300ms ease;
+    opacity: 1;
+    transform: scale(1);
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, opacity;
+    cursor: pointer;
+}
+
+.mealperiod-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.mealperiod-card h3 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin: 0;
+    color: white;
+}
+
 /* Responsive Grid Columns */
 @media (min-width: 992px) {
     .locations-grid {
@@ -357,6 +404,15 @@ form {
     .filter-btn {
         padding: 0.4rem 1rem;
         font-size: 0.85rem;
+    }
+
+    .mealperiod-card {
+        padding: 1.5rem 1rem;
+        min-height: 100px;
+    }
+
+    .mealperiod-card h3 {
+        font-size: 1rem;
     }
 }
 

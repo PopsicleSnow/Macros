@@ -9,7 +9,7 @@ function fetchMealperiods(loc) {
         success: function (data) {
             // Update the content with the received data
             data.forEach(function (mealPeriod) {
-                $('#mealperiods').append(`<li><a class="dropdown-item" href="#">${mealPeriod}</a></li>`);
+                $('#mealperiods').append(`<button class="mealperiod-card" data-mealperiod="${mealPeriod}"><h3>${mealPeriod}</h3></button>`);
             })
         },
         error: function (error) {

@@ -4,6 +4,8 @@ from query_firestore import query
 from update_firestore import upload_menu_to_firestore
 from locations import locations
 from google.cloud import firestore
+import os
+import secrets
 
 #####
 """Web App"""
@@ -79,49 +81,16 @@ def index():
                           get_display_name=get_display_name,
                           get_category=get_location_category)
 
-@app.route('/cafe3')
-def cafe3():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["cafe3"], data_name="cafe3")
+@app.route('/<location>')
+def location_page(location):
+    """Dynamic route handler for all location pages"""
+    # Validate that the location exists
+    if location not in LOCATION_DISPLAY_NAMES:
+        return "Location not found", 404
 
-@app.route('/crossroads')
-def crossroads():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["crossroads"], data_name="crossroads")
-
-@app.route('/foothill')
-def foothill():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["foothill"], data_name="foothill")
-
-@app.route('/clarkkerr')
-def clarkkerr():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["clarkkerr"], data_name="clarkkerr")
-
-@app.route('/gbc')
-def gbc():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["gbc"], data_name="gbc")
-
-@app.route('/localxdesign')
-def localxdesign():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["localxdesign"], data_name="localxdesign")
-
-@app.route('/browns')
-def browns():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["browns"], data_name="browns")
-
-@app.route('/ladleandleaf')
-def ladleandleaf():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["ladleandleaf"], data_name="ladleandleaf")
-
-@app.route('/undergroundpizza')
-def undergroundpizza():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["undergroundpizza"], data_name="undergroundpizza")
-
-@app.route('/monsoon')
-def monsoon():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["monsoon"], data_name="monsoon")
-
-@app.route('/almaregelato')
-def almaregelato():
-    return render_template('location.html', name=LOCATION_DISPLAY_NAMES["almaregelato"], data_name="almaregelato")
+    return render_template('location.html',
+                         name=LOCATION_DISPLAY_NAMES[location],
+                         data_name=location)
 
 @app.route('/about')
 def about():
@@ -139,16 +108,32 @@ def result():
         return "Error"
     # add up all the values
     data = {"calories": 0, "fat": 0, "carbs": 0, "protein": 0, "sugar": 0}
-    for i in food.values():
-        if len(i) != 6:
+    food_items = []  # Store individual food items for logging
+
+    for name, values in food.items():
+        if len(values) != 6:
             return "Error"
-        i = [number_parser(j) for j in i]
-        data["calories"] += i[1] * i[0] if i[1] > 0 and not isinf(i[1]) else 0
-        data["fat"] += i[2] * i[0] if i[2] > 0 and not isinf(i[2]) else 0
-        data["carbs"] += i[3] * i[0] if i[3] > 0 and not isinf(i[3]) else 0
-        data["protein"] += i[4] * i[0] if i[4] > 0 and not isinf(i[4]) else 0
-        data["sugar"] += i[5] * i[0] if i[5] > 0 and not isinf(i[5]) else 0
-    return render_template('result.html', data=data)
+        values = [number_parser(j) for j in values]
+        servings = values[0]
+
+        # Calculate totals
+        data["calories"] += values[1] * servings if values[1] > 0 and not isinf(values[1]) else 0
+        data["fat"] += values[2] * servings if values[2] > 0 and not isinf(values[2]) else 0
+        data["carbs"] += values[3] * servings if values[3] > 0 and not isinf(values[3]) else 0
+        data["protein"] += values[4] * servings if values[4] > 0 and not isinf(values[4]) else 0
+        data["sugar"] += values[5] * servings if values[5] > 0 and not isinf(values[5]) else 0
+
+        # Store individual food item data for logging
+        food_items.append({
+            "name": f"{name} ({servings})",
+            "calories": values[1] * servings if values[1] > 0 and not isinf(values[1]) else 0,
+            "fat": values[2] * servings if values[2] > 0 and not isinf(values[2]) else 0,
+            "carbs": values[3] * servings if values[3] > 0 and not isinf(values[3]) else 0,
+            "protein": values[4] * servings if values[4] > 0 and not isinf(values[4]) else 0,
+            "sugar": values[5] * servings if values[5] > 0 and not isinf(values[5]) else 0
+        })
+
+    return render_template('result.html', data=data, food_items=food_items)
 
 @app.route('/get_data')
 def get_data():
@@ -175,10 +160,15 @@ def mealperiods():
 
 @app.route('/tasks/update')
 def update():
-    if request.headers['X-Appengine-Cron'] == "true":
+    is_cron = request.headers.get('X-Appengine-Cron') == 'true'
+    provided_secret = request.headers.get('X-Cron-Secret')
+    expected_secret = os.environ.get('CRON_SECRET')
+
+    if is_cron and provided_secret and secrets.compare_digest(provided_secret, expected_secret):
         upload_menu_to_firestore()
-        return "Updated"
-    return "Error"
+        return "Updated", 200
+    
+    return "Unauthorized", 403
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=8080, debug=True)

@@ -30,3 +30,6 @@ handlers:
 - url: /.*
   secure: always
   script: auto
+
+env_variables:
+  CRON_SECRET: "mMyYFyesDumOfObjJNIOJCLcmOwqivOQ"

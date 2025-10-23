@@ -42,10 +42,38 @@
             </div>
             
             <div class="mt-4">
-                <a href="/" class="btn btn-primary">Calculate Another Meal</a>
+                {% if food_items %}
+                <a href="shortcuts://run-shortcut?name=LogCalMacros&input=text&text={% for item in food_items %}name={{ item.name|urlencode }}&calories={{ item.calories|round(2) }}&fat={{ item.fat|round(2) }}&sugar={{ item.sugar|round(2) }}&carbs={{ item.carbs|round(2) }}&protein={{ item.protein|round(2) }}{% if not loop.last %}%0A{% endif %}{% endfor %}"
+                   class="btn btn-success btn-lg mb-3 w-100">
+                    Log to Foodnoms
+                </a>
+                {% endif %}
+
+                <a href="/" class="btn btn-primary mb-3 w-100">Calculate Another Meal</a>
+
+                <div class="mt-4 pt-3 border-top">
+                    <p class="text-muted small mb-2">First time?</p>
+                    <div class="d-flex gap-2">
+                        <a href="https://apps.apple.com/us/app/nutrition-tracker-foodnoms/id1479461686"
+                           class="btn btn-outline-primary btn-sm flex-fill">
+                            1. Get FoodNoms App
+                        </a>
+                        <a href="https://www.icloud.com/shortcuts/548aa54e366f43399108dad097520533"
+                           class="btn btn-outline-primary btn-sm flex-fill">
+                            2. Get iOS Shortcut
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Console log all food items in a single statement with newlines
+    {% if food_items %}
+        console.log("{% for item in food_items %}name={{ item.name }}&calories={{ item.calories|round(2) }}&fat={{ item.fat|round(2) }}&sugar={{ item.sugar|round(2) }}&carbs={{ item.carbs|round(2) }}&protein={{ item.protein|round(2) }}{% if not loop.last %}\n{% endif %}{% endfor %}");
+    {% endif %}
+</script>
 {% endblock %}
 

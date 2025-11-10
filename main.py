@@ -1,11 +1,9 @@
 from math import inf, isinf
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect
 from query_firestore import query
 from update_firestore import upload_menu_to_firestore
 from locations import locations
 from google.cloud import firestore
-import os
-import secrets
 
 #####
 """Web App"""
@@ -73,6 +71,19 @@ def number_parser(value):
         return value
     except:
         return 0
+    
+@app.before_request
+def redirect_old_domain():
+    """Redirect from macros.kuljitu.com to ucbmacros.com."""
+    host = request.host.lower()
+    if host == 'macros.kuljitu.com':
+        # Create the new URL with the same path and query string
+        new_url = request.url.replace(
+            'macros.kuljitu.com', 
+            'ucbmacros.com', 
+            1
+        )
+        return redirect(new_url, code=301)
 
 @app.route('/')
 def index():
@@ -160,14 +171,13 @@ def mealperiods():
 
 @app.route('/tasks/update')
 def update():
+    # App Engine cron requests come from IP 0.1.0.2 and have X-Appengine-Cron header
     is_cron = request.headers.get('X-Appengine-Cron') == 'true'
-    provided_secret = request.headers.get('X-Cron-Secret')
-    expected_secret = os.environ.get('CRON_SECRET')
 
-    if is_cron and provided_secret and secrets.compare_digest(provided_secret, expected_secret):
+    if is_cron:
         upload_menu_to_firestore()
         return "Updated", 200
-    
+
     return "Unauthorized", 403
 
 if __name__ == '__main__':

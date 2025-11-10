@@ -3,5 +3,3 @@ cron:
   url: /tasks/update
   schedule: every day 03:00
   timezone: America/Los_Angeles
-  headers:
-    X-Cron-Secret: "mMyYFyesDumOfObjJNIOJCLcmOwqivOQ"

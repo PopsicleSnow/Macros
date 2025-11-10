@@ -28,6 +28,7 @@ def locations():
     locations["crossroads"] = requests.get(f"https://dining.berkeley.edu/wp-content/uploads/menus-exportimport/Crossroads_{today}.xml")
     locations["gbc"] = requests.get(f"https://dining.berkeley.edu/wp-content/uploads/menus-exportimport/Golden_Bear_Cafe_{today}.xml")
     locations["localxdesign"] = requests.get(f"https://dining.berkeley.edu/wp-content/uploads/menus-exportimport/Local_x_Design_{today}.xml")
+    locations["browns"] = requests.get(f"https://dining.berkeley.edu/wp-content/uploads/menus-exportimport/Browns_Cafe_{today}.xml")
 
     # Multi-location venue: Student Union Eateries
     # These all share the same XML file but are filtered by category

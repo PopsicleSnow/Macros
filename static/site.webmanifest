@@ -1,6 +1,6 @@
 {
-  "name": "Macros",
-  "short_name": "Macros",
+  "name": "CalFuel",
+  "short_name": "CalFuel",
   "icons": [
     {
       "src": "/static/web-app-manifest-192x192.png",

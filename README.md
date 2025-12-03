@@ -2,7 +2,7 @@
 
 A web application that helps UC Berkeley students track their macronutrient intake from campus dining halls and cafes. Calculate calories, protein, carbohydrates, fat, and sugar content from your meals with real-time menu data.
 
-**🌐 Live Demo:** https://macros.kuljitu.com/
+**🌐 Live Demo:** https://ucbmacros.com/
 
 ## 📋 Features
 
@@ -129,5 +129,5 @@ This project is open source and available under the [MIT License](LICENSE).
 
 If you encounter any issues or have questions:
 - Open an issue on this repository
-- Visit the live application at https://macros.kuljitu.com/
+- Visit the live application at https://ucbmacros.com/
 

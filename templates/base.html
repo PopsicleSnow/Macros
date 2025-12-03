@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Calculate your macros after eating at any one of UC Berkeley's dining halls or restaurants.">
+        <meta name="description" content="Easily track calories, protein, macros, and nutrients for every meal at UC Berkeley dining halls and cafes like Crossroads, GBC, and Brown's.">
         <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -16,12 +16,16 @@
         <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static',filename='favicon-96x96.png') }}"/>
         <link rel="icon" type="image/svg+xml" href="{{ url_for('static',filename='favicon.svg') }}" />
         <link rel="shortcut icon" href="{{ url_for('static',filename='favicon.ico') }}" />
-        <link rel="apple-touch-icon" href="{{ url_for('static',filename='apple-touch-icon.png') }}">
-        <meta name="apple-mobile-web-app-title" content="Macros" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static',filename='apple-touch-icon.png') }}">
+        <meta name="apple-mobile-web-app-title" content="CalFuel" />
         <link rel="manifest" href="{{ url_for('static',filename='site.webmanifest') }}" />
+        <meta property="og:title" content="CalFuel - UC Berkeley Dining Nutrition Tracker" />
+        <meta property="og:description" content="Track your macros at Crossroads, GBC, and more." />
+        <meta property="og:image" content="{{ url_for('static',filename='preview-image.png') }}" />
+        <meta property="og:url" content="https://ucbmacros.com" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet">
-        <title>{% block title %} {% endblock %}</title>
+        <title>{% block title %}CalFuel | UC Berkeley Dining Nutrition Tracker{% endblock %}</title>
     </head>
     <body class="text-bg-dark">
         <!-- Google Tag Manager (noscript) -->

@@ -21,7 +21,7 @@ MarkupSafe==3.0.3
 packaging==25.0
 pampy==0.3.0
 proto-plus==1.26.1
-protobuf==6.33.0
+protobuf==6.33.5
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
 pytz==2025.2

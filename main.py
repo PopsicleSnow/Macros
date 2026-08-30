@@ -1,5 +1,5 @@
 from math import inf, isinf
-from flask import Flask, render_template, jsonify, request, redirect
+from flask import Flask, abort, render_template, jsonify, request, redirect
 from query_firestore import query
 from update_firestore import upload_menu_to_firestore
 from locations import locations
@@ -84,6 +84,11 @@ def redirect_old_domain():
             1
         )
         return redirect(new_url, code=301)
+
+@app.before_request
+def block_scanners():
+    if any(p in request.path.lower() for p in ('.env', '.git', 'wp-', 'xmlrpc', '.boto', 'terraform')):
+        abort(404)
 
 @app.route('/')
 def index():

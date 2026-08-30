@@ -12,7 +12,7 @@ A web application that helps UC Berkeley students track their macronutrient inta
 - **Cafe 3** - Quick meals and snacks
 - **Clark Kerr** - Dining for Clark Kerr Campus residents
 - **GBC** (Golden Bear Cafe) - Campus center dining
-- **Browns** - Convenient campus dining option
+- **Gateway Cafe** - Convenient campus dining option
 
 ### Nutrition Tracking
 - ✅ **Calorie calculation** - Track your daily energy intake
